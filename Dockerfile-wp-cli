@@ -1,0 +1,21 @@
+FROM php:7.4-alpine
+
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+RUN apk add --no-cache bash less
+
+RUN chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions mysqli
+
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+
+RUN echo "sleep 10s;\
+    wp core install --url=localhost --title=Example --admin_user=danideso --admin_email=dani@deso.com --skip-email --allow-root --path=`/var/www/html`;\
+    wp plugin activate my-example-plugin --allow-root --path=`/var/www/html`;\
+    rm /activate.sh;" > activate.sh
+RUN chmod +x activate.sh
+
+CMD ["/activate.sh"]
+# CMD ["sleep", "1h"]
