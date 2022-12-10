@@ -7,12 +7,7 @@
    * Author: Webbame Ltd
    * Text Domain: mep
    * Domain Path: /languages
-   */
-
-
-
-
-  mep_hook_in_admin_menu();
+   */  
 
   /**
    * Add a menu entry to display mep_print_paths HTML
@@ -88,16 +83,9 @@
 
   /**
    * Hook-in the admin_menu hook to add the menu entry as defined above by mep_add_menu_entry()
-   *
-   * @return void
+   * The add_action function let you hook-into a pre-defined action or a custom action.
+   * Actions in WordPress are named `hooks`.
    */
-  function mep_hook_in_admin_menu() {
-    /**
-     * The add_action function let you hook-into a pre-defined action or a custom action.
-     * Actions in WordPress are named `hooks`.
-     */
-    add_action("admin_menu", "mep_add_menu_entry", 1);
-  }
-
-
+  add_action("admin_menu", "mep_add_menu_entry", 1);
+  
 ?>

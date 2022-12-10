@@ -4,8 +4,7 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - db_data:/var/lib/mysql
-    restart: always
+      - db_data:/var/lib/mysql    
     environment:
       MYSQL_ROOT_PASSWORD: somewordpress
       MYSQL_DATABASE: wordpress
@@ -17,12 +16,11 @@ services:
       - db
     build: 
       context: .
-      dockerfile: docker-wp-cli       
+      dockerfile: dockerfile-wp-cli       
     volumes:      
       - ./my-example-plugin:/var/www/html/wp-content/plugins/my-example-plugin
     ports:
-      - "80:80"
-    restart: always
+      - "80:80"    
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
