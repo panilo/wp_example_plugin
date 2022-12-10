@@ -15,9 +15,10 @@ services:
   wordpress:
     depends_on:
       - db
-    image: wordpress:latest          
-    volumes:
-      - wordpress_data:/var/www/html      
+    build: 
+      context: .
+      dockerfile: docker-wp-cli       
+    volumes:      
       - ./my-example-plugin:/var/www/html/wp-content/plugins/my-example-plugin
     ports:
       - "80:80"
@@ -28,21 +29,5 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
 
-  wp-cli:
-    depends_on:
-      - wordpress    
-    build: 
-      dockerfile: Dockerfile-wp-cli      
-    volumes:
-      - wordpress_data:/var/www/html
-      - ./my-example-plugin:/var/www/html/wp-content/plugins/my-example-plugin
-    working_dir: /var/www/html    
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
-
 volumes:
-  db_data: {}
-  wordpress_data: {}
+  db_data: {}  

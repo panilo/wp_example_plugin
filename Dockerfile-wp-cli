@@ -1,21 +1,18 @@
-FROM php:7.4-alpine
+FROM wordpress:6.1.1-php7.4-apache
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+# Installing & configuring xDebug
+RUN pecl install xdebug \
+  && docker-php-ext-enable xdebug
 
-RUN apk add --no-cache bash less
+RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini 
+RUN echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/xdebug.ini
 
-RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions mysqli
+# Installing WP CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN php wp-cli.phar --info
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
 
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
-    chmod +x wp-cli.phar && \
-    mv wp-cli.phar /usr/local/bin/wp
-
-RUN echo "sleep 10s;\
-    wp core install --url=localhost --title=Example --admin_user=danideso --admin_email=dani@deso.com --skip-email --allow-root --path=`/var/www/html`;\
-    wp plugin activate my-example-plugin --allow-root --path=`/var/www/html`;\
-    rm /activate.sh;" > activate.sh
-RUN chmod +x activate.sh
-
-CMD ["/activate.sh"]
-# CMD ["sleep", "1h"]
+USER www-data

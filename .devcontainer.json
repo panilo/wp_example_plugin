@@ -1,6 +1,0 @@
-{
-	"name": "Wordpress",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "wordpress",	
-	"workspaceFolder": "/var/www/html/wp-content/plugins/my-example-plugin"
-}
