@@ -1,6 +1,6 @@
 # wp_example_plugin
 
-A WordPress plugin example. Running on WSL+Docker, you can debug from your local VSCode.
+A WordPress plugin example. Running on WSL+Docker, you can debug from your local VSCode. Check your Docker network settings (this will work for bridge network driver only).
 
 > To activate WordPress jump on your wordpress container and run `wp core install --url=http://localhost --title=wp-example-plugin --admin_user=myadmin --admin_email=hello@hello.com --skip-email`
 
